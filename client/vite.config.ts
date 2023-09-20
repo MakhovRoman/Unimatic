@@ -1,12 +1,13 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from "path";
+import ViteCSSExportPlugin from 'vite-plugin-css-export';
 import dotenv from 'dotenv';
 dotenv.config()
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), ViteCSSExportPlugin()],
   resolve: {
     alias: {
       "@assets": path.resolve(__dirname, 'src', 'assets'),
@@ -14,6 +15,7 @@ export default defineConfig({
       "@pages": path.resolve(__dirname, 'src', 'pages'),
       "@router": path.resolve(__dirname, 'src', 'router'),
       "@services": path.resolve(__dirname, 'src', 'services'),
+      "@styles": path.resolve(__dirname, 'src', 'styles'),
       "@utils": path.resolve(__dirname, 'src', 'utils'),
     }
   },

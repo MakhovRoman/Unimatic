@@ -1,0 +1,7 @@
+@import '@styles/index';
+
+.main {
+  @extend %flex-row;
+  justify-content: center;
+  @extend %fill;
+}
