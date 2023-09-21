@@ -1,6 +1,8 @@
 import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { LoginRequestData } from '@services/api/types';
+import { NavLink } from 'react-router-dom';
+import { ROUTES } from '@router/routes';
 
 export const Login = () => {
   const { control, handleSubmit } = useForm({
@@ -57,6 +59,7 @@ export const Login = () => {
           </Button>
         </Stack>
       </form>
+      <NavLink to={ROUTES.registration.path} className="navLink">Не зарегистрировались?</NavLink>
     </Box>
   )
 }

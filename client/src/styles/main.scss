@@ -6,3 +6,17 @@ body {
   color: $white;
   font-family: "Roboto";
 }
+
+.navLink {
+  text-decoration: none;
+  color: $grey;
+  display: block;
+  margin-top: 10px;
+  transition: all 0.3s ease-in-out;
+
+  @include set-font-size(12px, 400);
+
+  &:hover {
+    color: $orange;
+  }
+}

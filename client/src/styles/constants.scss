@@ -14,3 +14,9 @@
   width: 100vw;
   height: 100vh
 }
+
+
+@mixin set-font-size($size, $weight) {
+  font-size: $size;
+  font-weight: $weight;
+}
