@@ -12,5 +12,11 @@ export const user = {
   },
   password: {
     type: DataType.STRING
+  },
+  firstName: {
+    type: DataType.STRING
+  },
+  lastName: {
+    type: DataType.STRING
   }
 };

@@ -4,6 +4,8 @@ export interface UserModel extends Model<InferAttributes<UserModel>, InferCreati
   id: CreationOptional<number>;
   email: string;
   password: string;
+  firstName: string;
+  lastName: string;
 }
 
 // export interface TodoListModel extends Model<InferAttributes<TodoListModel>, InferCreationAttributes<TodoListModel>> {

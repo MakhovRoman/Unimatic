@@ -46,7 +46,7 @@ Todo.belongsTo(User);
 export const dbConnect = async () => {
   try {
     await sequelize.authenticate(); // Check auth to DB
-    await sequelize.sync(); // Sync to DB
+    await sequelize.sync({alter: true}); // Sync to DB
   } catch (error) {
      console.log(error)
   }

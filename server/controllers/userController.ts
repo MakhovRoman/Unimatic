@@ -7,7 +7,7 @@ import { generateJWT } from "../helpers/generateJWT";
 
 class UserController {
   async registration(req: Request, res: Response, next: (arg: ApiError) => any) {
-    const {email, password} = req.body;
+    const {email, password, firstName, lastName} = req.body;
 
     // Check no-empty field
     if(!email || !password) {
@@ -22,7 +22,7 @@ class UserController {
 
     // Create new User
     const hashPassword = await bcrypt.hash(password, 5);
-    const user = await User.create({email, password: hashPassword});
+    const user = await User.create({email, password: hashPassword, firstName, lastName});
     const token = generateJWT(user.id, email)
 
     return res.json({token})
@@ -53,7 +53,14 @@ class UserController {
     const token = generateJWT(req.user.id, req.user.email);
     return res.json({token})
   }
-}
+
+  async me(req: Request, res: Response, next: (arg: ApiError) => void) {
+    const {email} = req.body;
+    const user = await User.findOne({where: {email}});
+
+    return res.json(user)
+  }
+ }
 
 
 export const userController = new UserController;

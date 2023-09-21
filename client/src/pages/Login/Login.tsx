@@ -3,17 +3,22 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { LoginRequestData } from '@services/api/types';
 import { NavLink } from 'react-router-dom';
 import { ROUTES } from '@router/routes';
+import { useDispatch } from '@services/hooks';
+import { userThunks } from '@services/slices/user-slice';
 
 export const Login = () => {
   const { control, handleSubmit } = useForm({
     defaultValues: {
       email: '',
       password: ''
-    }
+    },
+    mode: "onChange"
   });
 
-  const onSubmit: SubmitHandler<LoginRequestData> = data => {
-    console.log(data)
+  const dispatch = useDispatch();
+
+  const onSubmit: SubmitHandler<LoginRequestData> = async (data) => {
+    dispatch(userThunks.login(data))
   }
 
   return (
@@ -29,7 +34,7 @@ export const Login = () => {
             control={control}
             render={({field}) => (
               <TextField
-                type='text'
+                type='email'
                 variant='standard'
                 label="E-mail"
                 value={field.value}
@@ -51,7 +56,7 @@ export const Login = () => {
           />
           <Button
             fullWidth={true}
-            type='button'
+            type='submit'
             variant='contained'
             size='large'
           >
