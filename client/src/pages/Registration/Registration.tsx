@@ -42,7 +42,7 @@ export const Registration = () => {
         <Controller
             name="firstName"
             control={control}
-
+            rules={validationTemplate(InputNames.NAME)}
             render={({field}) => (
               <TextField
                 type='text'
@@ -50,12 +50,15 @@ export const Registration = () => {
                 label="FirstName"
                 value={field.value}
                 onChange={field.onChange}
+                error={!!errors.firstName?.message}
+                helperText={errors.firstName?.message}
               />
             )}
           />
           <Controller
             name="lastName"
             control={control}
+            rules={validationTemplate(InputNames.NAME)}
             render={({field}) => (
               <TextField
                 type='text'
@@ -63,6 +66,8 @@ export const Registration = () => {
                 label="LastName"
                 value={field.value}
                 onChange={field.onChange}
+                error={!!errors.lastName?.message}
+                helperText={errors.lastName?.message}
               />
             )}
           />

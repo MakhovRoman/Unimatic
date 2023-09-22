@@ -18,7 +18,6 @@ const initialState: UserState = {
 export const userThunks = {
   userMe: createAsyncThunk(
     'user/me',
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async (data: Pick<LoginRequestData, "email">, {dispatch}) => {
       const {id, email, firstName, lastName} = await userAPI.me(data);
 

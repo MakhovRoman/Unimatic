@@ -20,6 +20,6 @@ export interface TokenType {
 }
 
 export interface TokenDecode extends UserType {
-  exp: number,
-  iat: number
+  exp?: number,
+  iat?: number
 }
