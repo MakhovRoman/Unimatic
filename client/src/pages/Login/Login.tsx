@@ -5,9 +5,14 @@ import { NavLink } from 'react-router-dom';
 import { ROUTES } from '@router/routes';
 import { useDispatch } from '@services/hooks';
 import { userThunks } from '@services/slices/user-slice';
+import { InputNames, validationTemplate } from '@utils/validation';
 
 export const Login = () => {
-  const { control, handleSubmit } = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState: {errors, isValid}
+  } = useForm({
     defaultValues: {
       email: '',
       password: ''
@@ -32,6 +37,7 @@ export const Login = () => {
           <Controller
             name="email"
             control={control}
+            rules={validationTemplate(InputNames.EMAIL)}
             render={({field}) => (
               <TextField
                 type='email'
@@ -39,18 +45,23 @@ export const Login = () => {
                 label="E-mail"
                 value={field.value}
                 onChange={field.onChange}
+                error={!!errors.email?.message}
+                helperText={errors.email?.message}
               />
             )}
           />
           <Controller
             name="password"
             control={control}
+            rules={validationTemplate(InputNames.PASSWORD)}
             render={({field}) => (
               <TextField
                 variant='standard'
                 label="Password"
                 value={field.value}
                 onChange={field.onChange}
+                error={!!errors.password?.message}
+                helperText={errors.password?.message}
               />
             )}
           />
@@ -59,6 +70,7 @@ export const Login = () => {
             type='submit'
             variant='contained'
             size='large'
+            disabled={!isValid}
           >
             LOGIN
           </Button>

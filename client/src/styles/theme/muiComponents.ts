@@ -47,8 +47,13 @@ export const theme = createTheme({
             backgroundColor: pallete.primary.contrast,
             color: pallete.primary.lighter
           }
-        }
+        },
       }
+    },
+  },
+  palette: {
+    action: {
+      disabled: pallete.primary.light
     }
   }
 })

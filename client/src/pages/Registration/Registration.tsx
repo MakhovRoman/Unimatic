@@ -5,9 +5,15 @@ import { NavLink } from 'react-router-dom';
 import { ROUTES } from '@router/routes';
 import { useDispatch } from '@services/hooks';
 import { userThunks } from '@services/slices/user-slice';
+import { ERROR_MESSAGE, InputNames, REQUIRED_MESSAGE, validationTemplate } from '@utils/validation';
+import { useRef } from 'react';
 
 export const Registration = () => {
-  const { control, handleSubmit } = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState: {errors, isValid}
+  } = useForm({
     defaultValues: {
       firstName: '',
       lastName: '',
@@ -19,6 +25,7 @@ export const Registration = () => {
   });
 
   const dispatch = useDispatch();
+  const passwordRef = useRef<HTMLInputElement>();
 
   const onSubmit: SubmitHandler<RegisterRequestData> = data => {
     dispatch(userThunks.registration(data))
@@ -35,6 +42,7 @@ export const Registration = () => {
         <Controller
             name="firstName"
             control={control}
+
             render={({field}) => (
               <TextField
                 type='text'
@@ -61,6 +69,7 @@ export const Registration = () => {
           <Controller
             name="email"
             control={control}
+            rules={validationTemplate(InputNames.EMAIL)}
             render={({field}) => (
               <TextField
                 type='email'
@@ -68,30 +77,49 @@ export const Registration = () => {
                 label="E-mail"
                 value={field.value}
                 onChange={field.onChange}
+                error={!!errors.email?.message}
+                helperText={errors.email?.message}
               />
             )}
           />
           <Controller
             name="password"
             control={control}
+            rules={validationTemplate(InputNames.PASSWORD)}
             render={({field}) => (
               <TextField
                 variant='standard'
+                inputRef={passwordRef}
+                type='password'
                 label="Password"
                 value={field.value}
                 onChange={field.onChange}
+                error={!!errors.password?.message}
+                helperText={errors.password?.message}
               />
             )}
           />
           <Controller
             name="confirmPassword"
             control={control}
+            rules={{
+              required: REQUIRED_MESSAGE,
+              validate: (value: string) => {
+                if (value === passwordRef.current?.value) {
+                  return true
+                }
+                return ERROR_MESSAGE.CONFIRM_PASSWORD;
+              }
+            }}
             render={({field}) => (
               <TextField
                 variant='standard'
+                type='password'
                 label="Confirm password"
                 value={field.value}
                 onChange={field.onChange}
+                error={!!errors.confirmPassword?.message}
+                helperText={errors.confirmPassword?.message}
               />
             )}
           />
@@ -100,6 +128,7 @@ export const Registration = () => {
             type='submit'
             variant='contained'
             size='large'
+            disabled={!isValid}
           >
             LOGIN
           </Button>

@@ -9,11 +9,15 @@ import { ProtectedRoute } from "@components/protected-route/protected-route"
 import { Page404 } from "@pages/404"
 
 export const App = () => {
+
+
+
   return (
     <main className={styles.main}>
       <Routes>
 
         <Route element={<AuthPagesRoute />}>
+          <Route path={ROUTES.home.path} element={<Registration />}/>
           <Route path={ROUTES.login.path} element={<Login />}/>
           <Route path={ROUTES.registration.path} element={<Registration />}/>
         </Route>
@@ -21,7 +25,6 @@ export const App = () => {
         <Route element={<ProtectedRoute />}>
           <Route path={ROUTES.app.path} element={<Application />}/>
         </Route>
-
 
         <Route path="*" element={<Page404 />}/>
       </Routes>
