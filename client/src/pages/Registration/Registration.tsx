@@ -3,7 +3,8 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { RegisterRequestData } from '@services/api/types';
 import { NavLink } from 'react-router-dom';
 import { ROUTES } from '@router/routes';
-import { userAPI } from '@services/api/userApi';
+import { useDispatch } from '@services/hooks';
+import { userThunks } from '@services/slices/user-slice';
 
 export const Registration = () => {
   const { control, handleSubmit } = useForm({
@@ -17,8 +18,10 @@ export const Registration = () => {
     mode: "onChange"
   });
 
+  const dispatch = useDispatch();
+
   const onSubmit: SubmitHandler<RegisterRequestData> = data => {
-    userAPI.registration(data)
+    dispatch(userThunks.registration(data))
   }
 
   return (

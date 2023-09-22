@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice,  } from "@reduxjs/toolkit";
-import { LoginRequestData, RegisterRequestData, TokenDecode, UserType } from "@services/api/types";
+import { LoginRequestData, RegisterRequestData, UserType } from "@services/api/types";
 import { userAPI } from "@services/api/userApi";
 import { RootState } from "@services/store";
-import jwtDecode from "jwt-decode";
 
 interface UserState {
   user: UserType,
@@ -29,13 +28,11 @@ export const userThunks = {
   registration: createAsyncThunk(
     'user/registration',
     async (userData: RegisterRequestData, {dispatch}) => {
-      const {token} = await userAPI.login(userData);
-      localStorage.setItem('auth-token', token)
-      const {id, email}: TokenDecode = await jwtDecode(token);
-
-      // load user info
-      dispatch(userSlice.actions.setUser({id, email}));
-      email && dispatch(userThunks.userMe({email}))
+      await userAPI.registration(userData);
+      dispatch(userThunks.login({
+        email: userData.email,
+        password: userData.password
+      }))
     }
   ),
   login: createAsyncThunk(
