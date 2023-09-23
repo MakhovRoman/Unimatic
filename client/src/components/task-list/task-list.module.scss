@@ -5,6 +5,5 @@
   height: fit-content;
   @extend %flex-row;
   flex-wrap: wrap;
-  row-gap: $task-list-gap;
-  justify-content: space-between;
+  gap: $task-list-gap;
 }

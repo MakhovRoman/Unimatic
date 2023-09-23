@@ -1,0 +1,39 @@
+@import '@styles/index';
+
+.creator {
+  @include set-element-size($task-item-width);
+  border: 1px dashed $grey;
+  cursor: pointer;
+
+  @extend %flex-column;
+  justify-content: center;
+  align-items: center;
+
+  transition: all 0.15s ease-in-out;
+
+  &:hover {
+    transform: scale(1.05);
+    transition: all 0.15s ease-in-out;
+    border-color: $orange;
+
+    & .creator__text {
+      color: $orange;
+    }
+
+    & .icon path {
+      fill: $orange;
+    }
+  }
+
+  &__text {
+    margin-top: 30px;
+  }
+}
+
+.icon {
+  @include set-element-size(30%);
+
+  path {
+    fill: $white;
+  }
+}

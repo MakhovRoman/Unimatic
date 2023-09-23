@@ -3,7 +3,7 @@ import { todoController } from "../controllers/todoController";
 const router = Router();
 
 router.post('/', todoController.create);
-router.get('/', todoController.getAll);
+router.put('/', todoController.modify);
 router.get('/all/', todoController.getAll);
 router.delete('/', todoController.delete);
 

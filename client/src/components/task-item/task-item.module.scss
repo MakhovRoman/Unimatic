@@ -2,9 +2,11 @@
 
 .task {
   width: $task-item-width;
-  height: 200px;
+  height: $task-item-width;
   background-color: $light-grey;
   position: relative;
+
+  transition: all 0.15s ease-in-out;
 
   padding: 10px;
 
@@ -14,16 +16,32 @@
 
   &:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 20px 1px rgba(255, 255, 255, 0.1)
+    box-shadow: 0 0 20px 1px rgba(255, 255, 255, 0.1);
+    transition: all 0.15s ease-in-out;
+
   }
 
   &__title {
     @include set-font-size(18px, 600);
     text-transform: uppercase;
     letter-spacing: 0.1rem;
-    width: 100%;
+    width: fit-content;
+    margin: 0 auto;
     text-align: center;
-    text-decoration: underline;
+    color: $orange;
+    position: relative;
+
+    // not use underline for customization
+    &::after {
+      display: block;
+      content: '';
+      width: 100%;
+      height: 1px;
+      position: relative;
+      bottom: -2px;
+      left: 0;
+      background-color: $orange;
+    }
   }
 
   &__body {
@@ -41,6 +59,7 @@
   &__time {
     @include set-font-size(10px, 300);
     margin-left: auto;
+    color: $grey;
   }
 
   // &::after {

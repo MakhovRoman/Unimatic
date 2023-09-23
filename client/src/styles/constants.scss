@@ -22,6 +22,11 @@
   font-weight: $weight;
 }
 
+@mixin set-element-size($width, $height:$width) {
+  width: $width;
+  height: $height;
+}
+
 // CONSTANTS
 
 $task-item-width: 200px;
