@@ -1,0 +1,10 @@
+@import '@styles/index';
+
+.taskList {
+  width: calc($task-item-width * 3 + $task-list-gap * 2);
+  height: fit-content;
+  @extend %flex-row;
+  flex-wrap: wrap;
+  row-gap: $task-list-gap;
+  justify-content: space-between;
+}

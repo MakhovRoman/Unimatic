@@ -1,0 +1,57 @@
+@import '@styles/index';
+
+.task {
+  width: $task-item-width;
+  height: 200px;
+  background-color: $light-grey;
+  position: relative;
+
+  padding: 10px;
+
+  @extend %flex-column;
+  justify-content: space-between;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px 1px rgba(255, 255, 255, 0.1)
+  }
+
+  &__title {
+    @include set-font-size(18px, 600);
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    width: 100%;
+    text-align: center;
+    text-decoration: underline;
+  }
+
+  &__body {
+    width: calc(100%);
+    text-align: center;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    hyphens: auto;
+    word-wrap: break-word;
+    margin: auto 0;
+  }
+
+  &__time {
+    @include set-font-size(10px, 300);
+    margin-left: auto;
+  }
+
+  // &::after {
+  //   content: '';
+  //   width: 30px;
+  //   height: 30px;
+  //   background-color: $black;
+  //   position: absolute;
+  //   top: -15px;
+  //   right: -15px;
+  //   clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  //   transform: rotate(45deg);
+  // }
+}

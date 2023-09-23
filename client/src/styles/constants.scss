@@ -15,8 +15,14 @@
   height: 100vh
 }
 
+// MIXINS
 
 @mixin set-font-size($size, $weight) {
   font-size: $size;
   font-weight: $weight;
 }
+
+// CONSTANTS
+
+$task-item-width: 200px;
+$task-list-gap: 30px;
