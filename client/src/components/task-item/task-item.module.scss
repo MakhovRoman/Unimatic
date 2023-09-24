@@ -58,19 +58,10 @@
 
   &__time {
     @include set-font-size(10px, 300);
-    margin-left: auto;
+    width: 100%;
     color: $grey;
-  }
 
-  // &::after {
-  //   content: '';
-  //   width: 30px;
-  //   height: 30px;
-  //   background-color: $black;
-  //   position: absolute;
-  //   top: -15px;
-  //   right: -15px;
-  //   clip-path: polygon(50% 0, 100% 100%, 0 100%);
-  //   transform: rotate(45deg);
-  // }
+    @extend %flex-row;
+    justify-content: space-between;
+  }
 }

@@ -4,7 +4,7 @@ const router = Router();
 
 router.post('/', todoController.create);
 router.put('/', todoController.modify);
-router.get('/all/', todoController.getAll);
+router.post('/all/', todoController.getAll);
 router.delete('/', todoController.delete);
 
 export default router;

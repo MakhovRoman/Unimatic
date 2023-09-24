@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice,  } from "@reduxjs/toolkit";
 import { LoginRequestData, RegisterRequestData, UserType } from "@services/api/types";
 import { userAPI } from "@services/api/userApi";
 import { RootState } from "@services/store";
+import { taskThunks } from "./task-slice";
 
 interface UserState {
   user: UserType,
@@ -21,7 +22,8 @@ export const userThunks = {
     async (data: Pick<LoginRequestData, "email">, {dispatch}) => {
       const {id, email, firstName, lastName} = await userAPI.me(data);
 
-      dispatch(userSlice.actions.setUser({id, email, firstName, lastName}))
+      dispatch(userSlice.actions.setUser({id, email, firstName, lastName}));
+      id && dispatch(taskThunks.getTaskList({user_id: id}));
     }
   ),
   registration: createAsyncThunk(

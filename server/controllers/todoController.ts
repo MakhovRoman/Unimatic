@@ -19,7 +19,7 @@ class TodoController {
   }
 
   async getAll(req: Request, res: Response) {
-    const {user_id} = req.query;
+    const {user_id} = req.body;
 
     const tasks = await Todo.findAll({where: {user_id}});
 

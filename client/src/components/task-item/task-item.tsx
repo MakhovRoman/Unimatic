@@ -6,16 +6,18 @@ import { setCurrentTask } from '@services/slices/task-slice'
 export interface TaskItemProps {
   title: string,
   body: string,
-  time: string,
+  createdAt: string,
   id: number
 }
 
-export const TaskItem: FC<TaskItemProps> = ({title, body, time, id}) => {
+export const TaskItem: FC<TaskItemProps> = ({title, body, createdAt, id}) => {
   const dispatch = useDispatch();
   const selectHandler = (event: MouseEvent<HTMLDivElement>) => {
     const target = event.currentTarget;
     dispatch(setCurrentTask(target.id))
   }
+
+  const date = new Date(createdAt)
 
   return (
     <div
@@ -25,7 +27,10 @@ export const TaskItem: FC<TaskItemProps> = ({title, body, time, id}) => {
     >
       <p className={styles.task__title}>{title}</p>
       <div className={styles.task__body}>{body}</div>
-      <p className={styles.task__time}>{time}</p>
+      <p className={styles.task__time}>
+        <span>{date.toLocaleDateString('ru-RU')}</span>
+        <span>{date.toLocaleTimeString('ru-RU')}</span>
+      </p>
     </div>
   )
 }

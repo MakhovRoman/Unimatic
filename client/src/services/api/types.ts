@@ -23,3 +23,14 @@ export interface TokenDecode extends UserType {
   exp?: number,
   iat?: number
 }
+
+export interface TaskRequestData {
+  user_id: number,
+  title: string,
+  content: string
+}
+
+export interface TaskResponseData extends TaskRequestData {
+  id: number,
+  createdAt: string
+}
