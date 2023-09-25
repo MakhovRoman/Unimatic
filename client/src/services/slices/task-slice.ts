@@ -7,7 +7,9 @@ import { getModalState } from "@utils/getModalState";
 interface TaskState {
   current: CurrentTask | null,
   taskList: TaskResponseData[],
-  isOpen: boolean
+  isOpen: boolean,
+  isLoading: boolean,
+  isError: boolean
 }
 
 interface CurrentTask {
@@ -17,7 +19,9 @@ interface CurrentTask {
 const initialState: TaskState = {
   current: null,
   taskList: [],
-  isOpen: getModalState()
+  isOpen: getModalState(),
+  isLoading: false,
+  isError: false
 }
 
 export const taskThunks = {
@@ -82,6 +86,63 @@ export const taskSlice = createSlice({
 
       state.isOpen = getModalState();
     }
+  },
+  extraReducers: (builder) => {
+    // create task
+    builder.addCase(taskThunks.create.pending, (state) => {
+      state.isLoading = true;
+      state.isError = false;
+    }),
+    builder.addCase(taskThunks.create.fulfilled, (state) => {
+      state.isLoading = false;
+      state.isError = false;
+    }),
+    builder.addCase(taskThunks.create.rejected, (state) => {
+      state.isLoading = false;
+      state.isError = true;
+    }),
+
+    // get taskList
+    builder.addCase(taskThunks.getTaskList.pending, (state) => {
+      state.isLoading = true;
+      state.isError = false;
+    }),
+    builder.addCase(taskThunks.getTaskList.fulfilled, (state) => {
+      state.isLoading = false;
+      state.isError = false;
+    }),
+    builder.addCase(taskThunks.getTaskList.rejected, (state) => {
+      state.isLoading = false;
+      state.isError = true;
+    }),
+
+    // update
+    builder.addCase(taskThunks.update.pending, (state) => {
+      state.isLoading = true;
+      state.isError = false;
+    }),
+    builder.addCase(taskThunks.update.fulfilled, (state) => {
+      state.isLoading = false;
+      state.isError = false;
+    }),
+    builder.addCase(taskThunks.update.rejected, (state) => {
+      state.isLoading = false;
+      state.isError = true;
+    }),
+
+    // delete
+    builder.addCase(taskThunks.delete.pending, (state) => {
+      state.isLoading = true;
+      state.isError = false;
+    }),
+    builder.addCase(taskThunks.delete.fulfilled, (state) => {
+      state.isLoading = false;
+      state.isError = false;
+    }),
+    builder.addCase(taskThunks.delete.rejected, (state) => {
+      state.isLoading = false;
+      state.isError = true;
+    })
   }
 })
 
