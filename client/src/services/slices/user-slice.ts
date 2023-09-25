@@ -3,47 +3,73 @@ import { LoginRequestData, RegisterRequestData, UserType } from "@services/api/t
 import { userAPI } from "@services/api/userApi";
 import { RootState } from "@services/store";
 import { taskThunks } from "./task-slice";
+import axios from "axios";
 
 interface UserState {
   user: UserType,
   isLoading: boolean,
-  isError: boolean
+  error: null | string
 }
 
 const initialState: UserState = {
   user: {},
   isLoading: false,
-  isError: false
+  error: null
 }
 
 export const userThunks = {
   userMe: createAsyncThunk(
     'user/me',
-    async (data: Pick<LoginRequestData, "email">, {dispatch}) => {
-      const {id, email, firstName, lastName} = await userAPI.me(data);
+    async (data: Pick<LoginRequestData, "email">, {dispatch, rejectWithValue}) => {
+      try {
+        const {id, email, firstName, lastName} = await userAPI.me(data);
 
-      dispatch(userSlice.actions.setUser({id, email, firstName, lastName}));
-      id && dispatch(taskThunks.getTaskList({user_id: id}));
+        dispatch(userSlice.actions.setUser({id, email, firstName, lastName}));
+        id && dispatch(taskThunks.getTaskList({user_id: id}));
+      } catch (error) {
+        if (error instanceof axios.AxiosError) {
+          return rejectWithValue(error?.response?.data)
+        }
+
+        return rejectWithValue(null);
+      }
+
     }
   ),
   registration: createAsyncThunk(
     'user/registration',
-    async (userData: RegisterRequestData, {dispatch}) => {
-      await userAPI.registration(userData);
-      dispatch(userThunks.login({
-        email: userData.email,
-        password: userData.password
-      }))
+    async (userData: RegisterRequestData, {dispatch, rejectWithValue}) => {
+      try {
+        await userAPI.registration(userData);
+        dispatch(userThunks.login({
+          email: userData.email,
+          password: userData.password
+        }))
+      } catch (error) {
+        if (error instanceof axios.AxiosError) {
+          return rejectWithValue(error?.response?.data)
+        }
+
+        return rejectWithValue(null);
+      }
     }
   ),
   login: createAsyncThunk(
     'user/login',
-    async (userData: LoginRequestData, {dispatch}) => {
-      const {token} = await userAPI.login(userData);
-      localStorage.setItem('auth-token', token);
+    async (userData: LoginRequestData, {dispatch, rejectWithValue}) => {
+      try {
+        const {token} = await userAPI.login(userData);
+        localStorage.setItem('auth-token', token);
 
-      // load user info
-      dispatch(userThunks.userMe({email: userData.email}))
+        // load user info
+        dispatch(userThunks.userMe({email: userData.email}))
+      } catch (error) {
+        if (error instanceof axios.AxiosError) {
+          return rejectWithValue(error?.response?.data)
+        }
+
+        return rejectWithValue(null);
+      }
     }
   )
 }
@@ -60,43 +86,43 @@ export const userSlice = createSlice({
     // userMe
     builder.addCase(userThunks.userMe.pending, (state) => {
       state.isLoading = true;
-      state.isError = false;
+      state.error = null;
     }),
     builder.addCase(userThunks.userMe.fulfilled, (state) => {
       state.isLoading = false;
-      state.isError = false;
+      state.error = null;
     }),
-    builder.addCase(userThunks.userMe.rejected, (state) => {
+    builder.addCase(userThunks.userMe.rejected, (state, action) => {
       state.isLoading = false;
-      state.isError = true;
+      state.error = action?.payload?.message ? action?.payload?.message : null;
     }),
 
     // registration
     builder.addCase(userThunks.registration.pending, (state) => {
       state.isLoading = true;
-      state.isError = false;
+      state.error = null;
     }),
     builder.addCase(userThunks.registration.fulfilled, (state) => {
       state.isLoading = false;
-      state.isError = false;
+      state.error = null;
     }),
-    builder.addCase(userThunks.registration.rejected, (state) => {
+    builder.addCase(userThunks.registration.rejected, (state, action) => {
       state.isLoading = false;
-      state.isError = true;
+      state.error = action?.payload?.message ? action?.payload?.message : null;
     }),
 
     // login
     builder.addCase(userThunks.login.pending, (state) => {
       state.isLoading = true;
-      state.isError = false;
+      state.error = null;
     }),
     builder.addCase(userThunks.login.fulfilled, (state) => {
       state.isLoading = false;
-      state.isError = false;
+      state.error = null;
     }),
-    builder.addCase(userThunks.login.rejected, (state) => {
+    builder.addCase(userThunks.login.rejected, (state, action) => {
       state.isLoading = false;
-      state.isError = true;
+      state.error = action?.payload?.message ? action?.payload?.message : null;
     })
   }
 })

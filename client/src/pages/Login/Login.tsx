@@ -84,6 +84,15 @@ export const Login = () => {
             </Stack>
           </form>
           <NavLink to={ROUTES.registration.path} className="navLink">Не зарегистрировались?</NavLink>
+          {
+            user.error &&
+              <Box
+                mt={2}
+                fontSize={14}
+                color={'red'}
+                textAlign={'center'}
+              >{user.error}</Box>
+          }
         </Box>
         :
         <Loader />

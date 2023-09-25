@@ -1,14 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
-export class ApiError extends Error {
-  constructor(public message: string, public status: number) {
-    super(message);
-
-    this.name = this.constructor.name;
-    this.status = status;
-  }
-}
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const authInterceptor = (config: any) => {
   config.headers.authorization = `Bearer ${localStorage.getItem('token')}`
@@ -18,17 +9,6 @@ const authInterceptor = (config: any) => {
 export const axiosInstance = axios.create({
   baseURL: __API__ENDPOINT__,
 });
-
-axiosInstance.interceptors.response.use(
-  response => response,
-  error => {
-    if(axios.isAxiosError(error) && error.response) {
-      return Promise.reject(new ApiError(error.response.data.reason, error.response.status));
-    }
-
-    return Promise.reject(error);
-  }
-)
 
 axiosInstance.interceptors.request.use(authInterceptor)
 
