@@ -10,7 +10,8 @@ export const Application = () => {
   return (
     <>
     {
-      taskState.isLoading ?
+      taskState.isLoading
+      ?
       <Loader />
       :
       <>

@@ -55,6 +55,49 @@ export const userSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload
     }
+  },
+  extraReducers: (builder) => {
+    // userMe
+    builder.addCase(userThunks.userMe.pending, (state) => {
+      state.isLoading = true;
+      state.isError = false;
+    }),
+    builder.addCase(userThunks.userMe.fulfilled, (state) => {
+      state.isLoading = false;
+      state.isError = false;
+    }),
+    builder.addCase(userThunks.userMe.rejected, (state) => {
+      state.isLoading = false;
+      state.isError = true;
+    }),
+
+    // registration
+    builder.addCase(userThunks.registration.pending, (state) => {
+      state.isLoading = true;
+      state.isError = false;
+    }),
+    builder.addCase(userThunks.registration.fulfilled, (state) => {
+      state.isLoading = false;
+      state.isError = false;
+    }),
+    builder.addCase(userThunks.registration.rejected, (state) => {
+      state.isLoading = false;
+      state.isError = true;
+    }),
+
+    // login
+    builder.addCase(userThunks.login.pending, (state) => {
+      state.isLoading = true;
+      state.isError = false;
+    }),
+    builder.addCase(userThunks.login.fulfilled, (state) => {
+      state.isLoading = false;
+      state.isError = false;
+    }),
+    builder.addCase(userThunks.login.rejected, (state) => {
+      state.isLoading = false;
+      state.isError = true;
+    })
   }
 })
 
