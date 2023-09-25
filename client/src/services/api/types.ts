@@ -34,3 +34,7 @@ export interface TaskResponseData extends TaskRequestData {
   id: number,
   createdAt: string
 }
+
+export interface TaskUpdateRequestData extends Omit<TaskResponseData, "createdAt"> {
+  id: number
+}

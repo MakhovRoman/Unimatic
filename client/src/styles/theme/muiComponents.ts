@@ -40,11 +40,11 @@ export const theme = createTheme({
     },
     MuiButton: {
       styleOverrides: {
-        root: {
+        containedPrimary: {
           backgroundColor: pallete.primary.main,
           color: pallete.primary.dark,
           "&:hover": {
-            backgroundColor: pallete.primary.contrast,
+            backgroundColor: pallete.primary.khaki,
             color: pallete.primary.lighter
           }
         },

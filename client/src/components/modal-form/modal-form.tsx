@@ -1,27 +1,27 @@
 import { Button, Stack, TextField } from "@mui/material";
 import { TaskRequestData } from "@services/api/types";
 import { useDispatch, useSelector } from "@services/hooks";
-import { closeTaskModal, taskThunks } from "@services/slices/task-slice";
+import { closeTaskModal, selectTaskData, taskThunks } from "@services/slices/task-slice";
 import { selectUserData } from "@services/slices/user-slice";
 
 import { REQUIRED_MESSAGE } from "@utils/validation";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 export const ModalForm = () => {
-  const modalTitle = localStorage.getItem('modal_title');
-  const modalContent = localStorage.getItem('modal_content');
+  const modalState = {
+    title: localStorage.getItem('modal_title'),
+    content: localStorage.getItem('modal_content'),
+    current: localStorage.getItem('task_current'),
+  }
 
-  const [titleValue, setTitleValue] = useState(modalTitle || '');
-  const [contentValue, setContentValue] = useState(modalContent || '');
+  const [titleValue, setTitleValue] = useState(modalState.title || '');
+  const [contentValue, setContentValue] = useState(modalState.content || '');
 
   const {user} = useSelector(selectUserData);
-  const dispatch = useDispatch();
+  const {current} = useSelector(selectTaskData);
 
-  useEffect(() => {
-    modalTitle && setTitleValue(modalTitle);
-    modalContent && setContentValue(modalContent)
-  }, [modalContent, modalTitle])
+  const dispatch = useDispatch();
 
   const handlerTitleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const value = event.target.value;
@@ -49,9 +49,26 @@ export const ModalForm = () => {
   });
 
   const onSubmit: SubmitHandler<Pick<TaskRequestData, "title" | "content">> = data => {
-    dispatch(taskThunks.create({user_id: Number(user.id), ...data}));
+    !current?.id ?
+      dispatch(taskThunks.create({
+        user_id: Number(user.id),
+        ...data
+      }))
+      :
+      dispatch(taskThunks.update({
+        user_id: Number(user.id),
+        id: Number(current?.id),
+        ...data
+      }))
+
     dispatch(closeTaskModal());
     reset();
+  }
+
+  const handlerDelete = async () => {
+    dispatch(closeTaskModal());
+    current?.id && await dispatch(taskThunks.delete( Number(current?.id)) );
+    user.id && dispatch(taskThunks.getTaskList({user_id: user.id}))
   }
 
   return (
@@ -107,6 +124,18 @@ export const ModalForm = () => {
         >
           Submit
         </Button>
+
+        {
+          (current?.id || localStorage.getItem('task_current')) &&
+          <Button
+            variant="contained"
+            size="large"
+            color="error"
+            onClick={() => handlerDelete()}
+          >
+            Delete
+          </Button>
+        }
       </Stack>
     </form>
   )

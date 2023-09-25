@@ -14,7 +14,7 @@ export const TaskList = () => {
         <TaskItem
           key={`task-item-${item.id}`}
           title={item.title}
-          body={item.content}
+          content={item.content}
           createdAt={item.createdAt}
           id={item.id}
         />)

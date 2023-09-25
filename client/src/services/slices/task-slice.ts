@@ -1,22 +1,22 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { taskAPI } from "@services/api/taskAPI";
-import { TaskRequestData, TaskResponseData } from "@services/api/types";
+import { TaskRequestData, TaskResponseData, TaskUpdateRequestData } from "@services/api/types";
 import { RootState } from "@services/store";
 import { getModalState } from "@utils/getModalState";
 
 interface TaskState {
-  current: number | null,
+  current: CurrentTask | null,
   taskList: TaskResponseData[],
-  title: string,
-  content: string,
   isOpen: boolean
+}
+
+interface CurrentTask {
+  id: string,
 }
 
 const initialState: TaskState = {
   current: null,
   taskList: [],
-  title: '',
-  content: '',
   isOpen: getModalState()
 }
 
@@ -33,7 +33,23 @@ export const taskThunks = {
     'task/getTaskList',
     async(data: Pick<TaskRequestData, "user_id">, {dispatch}) => {
       const list = await taskAPI.getTaskList(data);
+      list.sort((a, b) => Number(a.id) - Number(b.id));
       dispatch(taskSlice.actions.setTaskList(list));
+    }
+  ),
+
+  update: createAsyncThunk(
+    'task/update',
+    async (data: TaskUpdateRequestData, {dispatch}) => {
+      await taskAPI.update(data);
+      dispatch(taskThunks.getTaskList({user_id: data.user_id}));
+    }
+  ),
+
+  delete: createAsyncThunk(
+    'task/delete',
+    async (id: number) => {
+      await taskAPI.delete(id);
     }
   )
 }
@@ -43,6 +59,8 @@ export const taskSlice = createSlice({
   initialState,
   reducers: {
     setCurrentTask: (state, action) => {
+      localStorage.setItem('task_current', action.payload.id)
+
       state.current = action.payload,
       state.isOpen = true
     },
@@ -57,6 +75,7 @@ export const taskSlice = createSlice({
       localStorage.setItem("modal_state", "false");
       localStorage.setItem("modal_title", '');
       localStorage.setItem("modal_content", '');
+      localStorage.setItem('task_current', '');
 
       state.isOpen = getModalState();
     }

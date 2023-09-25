@@ -1,15 +1,15 @@
-// import { useSelector } from '@services/hooks'
-// import { selectUserData } from '@services/slices/user-slice'
 import { useDispatch } from 'react-redux'
 import styles from './task-creator.module.scss'
 import AddIcon from '@assets/add-item.svg?react'
-import { openTaskModal } from '@services/slices/task-slice';
+import { openTaskModal, setCurrentTask } from '@services/slices/task-slice';
 
 export const TaskCreator = () => {
   const dispatch = useDispatch();
-  // const { user } = useSelector(selectUserData);
 
-  const openHandler = () => dispatch(openTaskModal())
+  const openHandler = () => {
+    dispatch(setCurrentTask(null))
+    dispatch(openTaskModal())
+  }
 
    return (
     <div className={styles.creator} onClick={openHandler}>

@@ -3,8 +3,8 @@ import { todoController } from "../controllers/todoController";
 const router = Router();
 
 router.post('/', todoController.create);
-router.put('/', todoController.modify);
+router.put('/', todoController.update);
 router.post('/all/', todoController.getAll);
-router.delete('/', todoController.delete);
+router.delete('/:id', todoController.delete);
 
 export default router;
