@@ -59,10 +59,13 @@ export const taskSlice = createSlice({
   initialState,
   reducers: {
     setCurrentTask: (state, action) => {
-      localStorage.setItem('task_current', action.payload.id)
+      state.current = action.payload;
+      state.isOpen = true;
 
-      state.current = action.payload,
-      state.isOpen = true
+      if (action.payload?.id !== undefined) {
+        localStorage.setItem('task_current', action.payload?.id)
+      }
+
     },
     setTaskList: (state, action) => {
       state.taskList = action.payload

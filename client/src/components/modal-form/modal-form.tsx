@@ -126,7 +126,7 @@ export const ModalForm = () => {
         </Button>
 
         {
-          (current?.id || localStorage.getItem('task_current')) &&
+          (current?.id || modalState.current) &&
           <Button
             variant="contained"
             size="large"
